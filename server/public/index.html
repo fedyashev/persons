@@ -3,19 +3,44 @@
 <head>
   <meta charset="utf-8">
   <title>Persons</title>
+  <link rel="stylesheet" type="text/css" href="css/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 
   <header>
     <div class="container">
-      <h1>Person Manager</h1>
+      <h1 class="header-text">Person Manager</h1>
     </div>
   </header>
 
   <main>
     <div class="container">
       
+      <div class="button-group">
+        <button type="button" name="btnAdd" id="btnAddId" class="btn btn-yellow">Add</button>
+      </div>
+
+      <div class="table">
+        <table class="table-content">
+          <thead class="table-header">
+            <tr>
+              <th>Id</th>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Phone number</th>
+              <th>Salary</th>
+              <th>Date</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody class="table-body" id="personsData">
+            
+          </tbody>
+        </table>
+      </div>
+
     </div>
   </main>
 
