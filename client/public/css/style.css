@@ -21,7 +21,7 @@ header {
   background: lightgray;
   font-size: 20px;
   padding: 5px;
-  margin: 5px;
+  margin: 5px 0px;
 }
 
 .btn-yellow {
@@ -40,13 +40,57 @@ header {
   background: lightpink;
 }
 
-#table-content {
+.table {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid black;
 }
 
-#form-add-layout {
+.btn-close {
+  position: absolute;
+  right: 5px;
+  top: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-close:hover {
+  color: slateblue;
+}
+
+.btn-close::after {
+  content: "\2716";
+}
+
+.btn-delete {
+  text-decoration: none;
+  display: inline-block;
+  content: url('../images/trash.svg');
+  height: 20px;
+}
+
+.table-body tr:nth-child(2n) {
+  background: lightgoldenrodyellow;
+}
+
+.table-body tr:nth-child(2n+1) {
+  background: lightcyan;
+}
+
+.table-header {
+  background: lightslategray;
+  color: #fff;
+}
+
+.table-header th, .table-body td {
+  border: 1px solid black;
+}
+
+.table-body td {
+  text-align: center;
+}
+
+#modal-widow-layout {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -55,10 +99,10 @@ header {
   background: rgba(0, 0, 0, 0.7);
 }
 
-#form-add-window {
+#modal-window {
   position: relative;
   width: 640px;
-  margin: 0px auto;
+  margin: 100px auto 0px auto;
   border-radius: 5px;
   background: #fff;
 }
@@ -75,7 +119,10 @@ header {
   font-size: 20px;
 }
 
+.form-label {
+  font-size: 20px;
+}
+
 .form-control, .form-control:focus {
   border-radius: 5px;
 }
-
