@@ -1,3 +1,5 @@
+var personId = 0;
+
 window.onload = function() {
   btnAddId.onclick = btnAddOnclick;
 };
@@ -71,9 +73,43 @@ function createButton(name, id, className, innerText) {
 }
 
 function btnCreateOnclick() {
+  let obj = {
+    id: ++personId,
+    firstName: "test",
+    lastName: "test",
+    email: "test",
+    phone: "test",
+    salary: "test",
+    date: Date.now()
+  };
 
+  let table = document.querySelector("#table-content");
+  addTableRow(table, obj);
 }
 
 function btnCancelOnclick() {
   document.querySelector("#form-add-layout").remove();
+}
+
+// Population
+
+function addTableRow(table, obj) {
+  let tr = document.createElement("tr");
+  
+  tr.append(createTd("id", obj.id));
+  tr.append(createTd("firstName", obj.firstName));
+  tr.append(createTd("lastName", obj.lastName));
+  tr.append(createTd("email", obj.email));
+  tr.append(createTd("phone", obj.phone));
+  tr.append(createTd("salary", obj.salary));
+  tr.append(createTd("date", obj.date));
+
+  table.querySelector("tbody").append(tr);
+}
+
+function createTd(name, innerText) {
+  let td = document.createElement("td");
+  td.innerText = innerText;
+  td.setAttribute("name", name);
+  return td;
 }

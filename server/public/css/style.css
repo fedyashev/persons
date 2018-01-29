@@ -40,7 +40,7 @@ header {
   background: lightpink;
 }
 
-.table-content {
+#table-content {
   width: 100%;
   border-collapse: collapse;
   border: 1px solid black;
