@@ -1,5 +1,7 @@
-// "use strict"
+"use strict"
 // import Context from "./context";
+import ModalWindow from "./modal-window.js";
+import Request from "./request.js";
 
 class Context {
   constructor(data, isSuccess) {
@@ -12,13 +14,23 @@ window.onload = function() {
   btnAddId.onclick = btnAddOnclick;
 
   let table = document.querySelector("#persons-table");
-  let context = getPersons();
-  if (context.isSuccess) {
-    populateContentTable(table, context.data);
-  }
-  else {
-    alert(context.data);
-  }
+  // let context = getPersons();
+  // //console.log(context);
+  // if (context.isSuccess) {
+  //   populateContentTable(table, context.data);
+  // }
+  // else {
+  //   alert(context.data);
+  // }
+  let req = new Request();
+  req.GetJSON("/api/persons", function(status, data) {
+    if (status == 200) {
+      populateContentTable(table, data);
+    }
+    else {
+      alert(context.data);
+    }
+  });
 };
 
 /*
@@ -26,17 +38,27 @@ window.onload = function() {
 */
 
 // Get persons list from server
-function getPersons() {
-  let xhr = new XMLHttpRequest();
-  xhr.open("GET", "/api/persons", false);
-  xhr.send();
-  if (xhr.status == 200) {
-    return new Context(JSON.parse(xhr.responseText), true);
-  }
-  else {
-    return new Context("Can't get persons.", false);
-  }
-}
+// function getPersons() {
+//   // let xhr = new XMLHttpRequest();
+//   // xhr.open("GET", "/api/persons", false);
+//   // xhr.send();
+//   // if (xhr.status == 200) {
+//   //   return new Context(JSON.parse(xhr.responseText), true);
+//   // }
+//   // else {
+//   //   return new Context("Can't get persons.", false);
+//   // }
+//   let req = new Request();
+//   return req.GetJSON("/api/persons", function(status, data) {
+//     console.log(data);
+//     if (status == 200) {
+//       return new Context(data, true);
+//     }
+//     else {
+//       return new Context("Can't get persons.", false);
+//     }
+//   });
+// }
 
 // Create a new person 
 function postPerson(obj) {
@@ -76,23 +98,8 @@ function deletePerson(id) {
 */
 
 function btnAddOnclick() {
-  let layout = document.querySelector("#modal-widow-layout");
-  if (!layout) {
-    layout = document.createElement("div");
-    document.body.appendChild(layout);
-    layout.id = "modal-widow-layout";
-
-    let window = document.createElement("div");
-    layout.appendChild(window);
-    window.id = "modal-window";
-
-    let btnClose = document.createElement("a");
-    btnClose.className = "btn-close"
-    btnClose.onclick = () => document.querySelector("#modal-widow-layout").remove();
-    window.appendChild(btnClose);
-
-    window.appendChild(createAddPersonForm());
-  }
+  let createPersonDialog = new ModalWindow(document.body, createAddPersonForm());
+  createPersonDialog.show();
 }
 
 function btnCreateOnclick() {

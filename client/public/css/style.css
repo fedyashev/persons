@@ -90,7 +90,7 @@ header {
   text-align: center;
 }
 
-#modal-widow-layout {
+#modal-layout-id {
   position: fixed;
   top: 0px;
   left: 0px;
@@ -99,7 +99,7 @@ header {
   background: rgba(0, 0, 0, 0.7);
 }
 
-#modal-window {
+#window-id {
   position: relative;
   width: 640px;
   margin: 100px auto 0px auto;
