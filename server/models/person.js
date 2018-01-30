@@ -16,10 +16,14 @@ let Person = mongoose.model("Person", PersonSchema);
 
 module.exports = Person;
 
+Person.getAll = function(callback) {
+    Person.find(callback);
+}
+
 Person.createPerson = function(person, callback) {
     person.save(callback);
 }
 
-Person.getAll = function(callback) {
-    Person.find(callback);
+Person.deletePersonById = function(id, callback) {
+  Person.findOne({id: id}).remove(callback);
 }

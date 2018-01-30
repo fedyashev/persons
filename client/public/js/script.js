@@ -2,38 +2,78 @@
 // import Context from "./context";
 
 class Context {
-  constructor(data, error) {
+  constructor(data, isSuccess) {
       this.data = data;
-      this.error = error;
+      this.isSuccess = isSuccess;
   };
 };
-
-var personId = 0;
 
 window.onload = function() {
   btnAddId.onclick = btnAddOnclick;
 
   let table = document.querySelector("#persons-table");
-  let context = getPesonsList();
-  if (context.data) {
+  let context = getPersons();
+  if (context.isSuccess) {
     populateContentTable(table, context.data);
   }
   else {
-    alert(context.error);
+    alert(context.data);
   }
 };
 
-function getPesonsList() {
+/*
+  Server interaction
+*/
+
+// Get persons list from server
+function getPersons() {
   let xhr = new XMLHttpRequest();
-  xhr.open("GET", "api/persons", false);
+  xhr.open("GET", "/api/persons", false);
   xhr.send();
-  if (xhr.status != 200) {
-    return new Context(null, "Error");
+  if (xhr.status == 200) {
+    return new Context(JSON.parse(xhr.responseText), true);
   }
   else {
-    return new Context(JSON.parse(xhr.responseText), null);
+    return new Context("Can't get persons.", false);
   }
 }
+
+// Create a new person 
+function postPerson(obj) {
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "/api/persons/", false);
+  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+  xhr.send(JSON.stringify(obj));
+  let context = JSON.parse(xhr.responseText);
+  if (xhr.status == 201) {
+    return new Context(context.data, true);
+  }
+  else {
+    return new Context(context.data, false);
+  }
+}
+
+function updatePerson(obj) {
+
+}
+
+function deletePerson(id) {
+  let xhr = new XMLHttpRequest();
+  xhr.open("DELETE", `/api/persons/${id}`, false);
+  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+  xhr.send();
+  //let context = JSON.parse(xhr.responseText);
+  if (xhr.status == 204) {
+    return new Context("Deleted", true);
+  }
+  else {
+    return new Context(`Can't delete person by id=${id}`, false);
+  }
+}
+
+/*
+  Buttons events handlers
+*/
 
 function btnAddOnclick() {
   let layout = document.querySelector("#modal-widow-layout");
@@ -54,6 +94,41 @@ function btnAddOnclick() {
     window.appendChild(createAddPersonForm());
   }
 }
+
+function btnCreateOnclick() {
+  let obj = {
+    firstName: firstNameId.value,
+    lastName: lastNameId.value,
+    email: emailId.value,
+    phone: phoneId.value,
+    salary: salaryId.value,
+    date: Date.now()
+  };
+  let context = postPerson(obj);
+  if (context.isSuccess) {
+    alert("Success");
+    context.data.date = new Date(context.data.date).toLocaleString();
+    document.querySelector("#persons-table .table-body").appendChild(createTableRow(context.data));
+  }
+  else {
+    alert(context.data);
+  }
+}
+
+function btnDeleteOnclick() {
+  let tr = this.parentNode.parentNode
+  let id = tr.getAttribute("data-id");
+  let context = deletePerson(id);
+  if (context.isSuccess) {
+    alert("Success");
+    tr.remove();
+  }
+  else {
+    alert(context.data);
+  }
+}
+
+///////////////////////////////////////////////////////////////////////////////
 
 function createAddPersonForm() {
   let form = document.createElement("form");
@@ -139,37 +214,9 @@ function createTd(name, innerText) {
   return td;
 }
 
-function btnCreateOnclick() {
-  let xhr = new XMLHttpRequest();
-  let formData = new FormData(document.forms.addPersonForm);
-  let obj = {
-    firstName: firstNameId.value,
-    lastName: lastNameId.value,
-    email: emailId.value,
-    phone: phoneId.value,
-    salary: salaryId.value,
-    date: Date.now()
-  };
-  xhr.open("POST", "/api/persons/", false);
-  xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
-  xhr.send(JSON.stringify(obj));
-  if (xhr.status == 201) {
-    alert("Success!");
-    let table = document.querySelector("#persons-table");
-    table.querySelector(".table-body").innerText = "";
-    populateContentTable(table, getPesonsList());
-  }
-  else {
-    let context = JSON.parse(xhr.responseText);
-    alert(context.error);
-  }
-}
-
-// Population
-
 function createTableRow(obj) {
   let tr = document.createElement("tr");
-  tr.id = obj.id;
+  tr.setAttribute("data-id", obj.id);
   
   tr.appendChild(createTd("id", obj.id));
   tr.appendChild(createTd("firstName", obj.firstName));
@@ -180,20 +227,16 @@ function createTableRow(obj) {
   tr.appendChild(createTd("date", obj.date));
 
   let tdButtonDelete = document.createElement("td");
-  //let btnDelete = createButton("button", "btnDelete", "btnDeleteId", "btn btn-red", "X");
   let btnDelete = document.createElement("a");
   btnDelete.className = "btn-delete";
   btnDelete.innerText = " ";
+  btnDelete.title = "Delete";
   btnDelete.onclick = btnDeleteOnclick;
 
   tdButtonDelete.appendChild(btnDelete);
   tr.appendChild(tdButtonDelete);
 
   return tr;
-}
-
-function btnDeleteOnclick() {
-  console.log(this.parentNode.parentNode.id);
 }
 
 // Potulate content table
