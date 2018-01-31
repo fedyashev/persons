@@ -126,3 +126,45 @@ header {
 .form-control, .form-control:focus {
   border-radius: 5px;
 }
+
+.flash-message-layout {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  margin: 0px auto;
+}
+
+.flash-message-window {
+  position: relative;
+  width: 480px;
+  margin: 0px auto;
+  padding: 5px;
+  border-radius: 5px;
+  background: #fff;
+}
+
+.flash-message-success {
+  background: lightgreen;
+}
+
+.flash-message-warning {
+  background: pink; 
+}
+
+.create-person-dialog-layout {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.create-person-dialog-window {
+  position: relative;
+  width: 640px;
+  margin: 100px auto 0px auto;
+  border-radius: 5px;
+  background: #fff;
+}

@@ -2,6 +2,7 @@
 // import Context from "./context";
 import ModalWindow from "./modal-window.js";
 import Request from "./request.js";
+import { FlashMessage, CreatePersonDialog } from "./dialog.js";
 
 class Context {
   constructor(data, isSuccess) {
@@ -12,16 +13,7 @@ class Context {
 
 window.onload = function() {
   btnAddId.onclick = btnAddOnclick;
-
   let table = document.querySelector("#persons-table");
-  // let context = getPersons();
-  // //console.log(context);
-  // if (context.isSuccess) {
-  //   populateContentTable(table, context.data);
-  // }
-  // else {
-  //   alert(context.data);
-  // }
   let req = new Request();
   req.GetJSON("/api/persons", function(status, data) {
     if (status == 200) {
@@ -98,8 +90,10 @@ function deletePerson(id) {
 */
 
 function btnAddOnclick() {
-  let createPersonDialog = new ModalWindow(document.body, createAddPersonForm());
-  createPersonDialog.show();
+  //let createPersonDialog = new ModalWindow(document.body, createAddPersonForm());
+  //createPersonDialog.show();
+  let dlg = new CreatePersonDialog(document.body, btnCreateOnclick);
+  dlg.show();
 }
 
 function btnCreateOnclick() {
@@ -213,6 +207,8 @@ function createButton(type, name, id, className, innerText) {
   button.innerText = innerText;
   return button;
 }
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function createTd(name, innerText) {
   let td = document.createElement("td");
