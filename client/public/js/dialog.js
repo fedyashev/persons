@@ -60,6 +60,17 @@ export class FlashMessage extends Dialog  {
   }
 }
 
+
+export function SuccessFlashMessage(container, text) {
+  let flash = new FlashMessage(container);
+  flash.showMessage(text, true);
+}
+
+export function FailFlashMessage(container, text) {
+  let flash = new FlashMessage(container);
+  flash.showMessage(text, false);
+}
+
 export class CreatePersonDialog extends Dialog {
   constructor(container, btnCreateOnclickHandler) {
     super(container);
@@ -86,9 +97,20 @@ export class CreatePersonDialog extends Dialog {
     this.form.appendChild(formHeader);
     this.form.appendChild(formTable);
 
-    let btn = this.form.querySelector(".btnCreateId");
+    let btn = this.form.querySelector("#btnCreateId");
     btn.onclick = this.handler;
   }
+
+  getObject() {
+    return {
+      firstName: firstNameId.value,
+      lastName: lastNameId.value,
+      email: emailId.value,
+      phone: phoneId.value,
+      salary: salaryId.value,
+    }
+  }
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
