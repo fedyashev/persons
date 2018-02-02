@@ -110,7 +110,51 @@ export class CreatePersonDialog extends Dialog {
       salary: salaryId.value,
     }
   }
+}
 
+export class MessageBox extends Dialog {
+  constructor(container) {
+    super(container);
+    this.text = document.createElement("p");
+    this.btnOk = document.createElement("button");
+    this.btnCancel = document.createElement("button");
+    this.initComponents();
+  }
+
+  initComponents() {
+    super.initComponents();
+    super.Layout.className = "message-box-layout";
+    super.Window.className = "message-box-window";
+    super.Window.appendChild(this.text);
+
+    this.btnOk.type = "button";
+    this.btnOk.name = "Ok";
+    this.btnOk.className = "message-box-btn btn-green";
+    this.btnOk.id = "btnOk";
+    this.btnOk.innerText = "Ok";
+
+    this.btnCancel.type = "button";
+    this.btnCancel.name = "Cancel";
+    this.btnCancel.className = "message-box-btn btn-red";
+    this.btnCancel.id = "btnCancel";
+    this.btnCancel.innerText = "Cancel";
+    this.btnCancel.onclick = () => {super.close();};
+
+    let grpButtons = document.createElement("div");
+    grpButtons.className = "message-box-btn-group";
+    grpButtons.appendChild(this.btnOk);
+    grpButtons.appendChild(this.btnCancel);
+
+    super.Window.appendChild(grpButtons);
+  }
+
+  show(x, y, message, btnOkOnclickHandler) {
+    super.Layout.style.top = `${y - 50}px`;
+    super.Layout.style.left = `${x - 100}px`;    
+    this.text.innerText = message;
+    this.btnOk.onclick = btnOkOnclickHandler;
+    super.show();
+  }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////

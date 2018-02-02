@@ -6,7 +6,8 @@ import {
   FlashMessage,
   CreatePersonDialog,
   SuccessFlashMessage,
-  FailFlashMessage
+  FailFlashMessage,
+  MessageBox
 } from "./dialog.js";
 
 window.onload = function() {
@@ -54,18 +55,23 @@ function btnCreateOnclick() {
   });
 }
 
-function btnDeleteOnclick() {
+function btnDeleteOnclick(e) {
   let tr = this.parentNode.parentNode
   let id = tr.getAttribute("data-id");
-  Request.delete(`/api/persons/${id}`, function(status, response) {
-    if (status == 204) {
-      SuccessFlashMessage(document.body, `Person with ${id} was deleted.`);
-      tr.remove();
-    }
-    else {
-      FailFlashMessage(document.body, response.data);
-    }
+  let mbx = new MessageBox(document.body);
+  mbx.show(e.pageX, e.pageY, `Do you want to delete this person with id=${id}?`, function() {
+    Request.delete(`/api/persons/${id}`, function(status, response) {
+      if (status == 204) {
+        SuccessFlashMessage(document.body, `Person with ${id} was deleted.`);
+        tr.remove();
+      }
+      else {
+        FailFlashMessage(document.body, response.data);
+      }
+      mbx.close();
+    });
   });
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////

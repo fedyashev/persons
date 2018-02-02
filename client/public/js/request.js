@@ -24,7 +24,6 @@ export default class Request {
   static delete(url, callback) {
     let xhr = new XMLHttpRequest();
     xhr.open("DELETE", url);
-    //xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
     xhr.send();
     xhr.onreadystatechange = function() {
       if (this.readyState != 4) return;

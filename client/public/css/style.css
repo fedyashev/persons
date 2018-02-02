@@ -168,3 +168,32 @@ header {
   border-radius: 5px;
   background: #fff;
 }
+
+.message-box-layout {
+  position: absolute;
+  width: 200px;
+  min-height: 100px;
+  background: lightgray;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.message-box-window {
+
+}
+
+.message-box-btn-group {
+  text-align: center;
+}
+
+.message-box-btn {
+  font-size: 20px;
+  padding: 5px;
+  border-radius: 5px;
+  width: 80px;
+  margin: 0 0 0 20px;
+}
+
+.message-box-btn:first-child {
+  margin: 0px;
+}
